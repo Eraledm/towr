@@ -1,5 +1,7 @@
 # The command for the robot specified by the user
 
+xpp_msgs/StateLin3d    init_lin                  # the initial linear state of the robot
+xpp_msgs/StateLin3d    init_ang                  # the initial angular state of the robot
 xpp_msgs/StateLin3d    goal_lin                  # the linear state to reach (x,y,z and derivatives)
 xpp_msgs/StateLin3d    goal_ang                  # the angular state to reach (roll, pitch, yaw and derivatives)
 float64                total_duration            # the total time to reach the goal state

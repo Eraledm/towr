@@ -44,7 +44,7 @@ namespace towr {
 
 
 enum YCursorRows {HEADING=6, OPTIMIZE=8, VISUALIZE, INITIALIZATION, PLOT,
-                  REPLAY_SPEED, GOAL_POS, GOAL_ORI, ROBOT,
+                  REPLAY_SPEED, INIT_POS, INIT_ORI, GOAL_POS, GOAL_ORI, ROBOT,
                   GAIT, OPTIMIZE_GAIT, TERRAIN, DURATION, CLOSE, END};
 static constexpr int Y_STATUS      = END+1;
 static constexpr int X_KEY         = 1;
@@ -126,6 +126,14 @@ TowrUserInterface::PrintScreen() const
   wmove(stdscr, REPLAY_SPEED, X_VALUE);
   printw("%.2f", replay_speed_);
 
+  wmove(stdscr, INIT_POS, X_KEY);
+  printw("wasd");
+  wmove(stdscr, INIT_POS, X_DESCRIPTION);
+  printw("Initial x-y");
+  wmove(stdscr, INIT_POS, X_VALUE);
+  PrintVector2D(init_geom_.lin.p_.topRows(2));
+  printw(" [m]");
+
   wmove(stdscr, GOAL_POS, X_KEY);
   printw("arrows");
   wmove(stdscr, GOAL_POS, X_DESCRIPTION);
@@ -192,6 +200,21 @@ TowrUserInterface::CallbackKey (int c)
   const static double d_ang = 0.25; // [rad]
 
   switch (c) {
+    // initial position
+    case 's':
+      init_geom_.lin.p_.x() -= d_lin;
+      break;
+    case 'w':
+      init_geom_.lin.p_.x() += d_lin;
+      break;
+    case 'd':
+      init_geom_.lin.p_.y() += d_lin;
+      break;
+    case 'a':
+      init_geom_.lin.p_.y() -= d_lin;
+      break;
+
+    // desired goal position
     case KEY_RIGHT:
       goal_geom_.lin.p_.x() -= d_lin;
       break;
@@ -296,6 +319,8 @@ TowrUserInterface::CallbackKey (int c)
 void TowrUserInterface::PublishCommand()
 {
   towr_ros::TowrCommand msg;
+  msg.init_lin                 = xpp::Convert::ToRos(init_geom_.lin);
+  msg.init_ang                 = xpp::Convert::ToRos(init_geom_.ang);
   msg.goal_lin                 = xpp::Convert::ToRos(goal_geom_.lin);
   msg.goal_ang                 = xpp::Convert::ToRos(goal_geom_.ang);
   msg.total_duration           = total_duration_;

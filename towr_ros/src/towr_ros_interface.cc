@@ -90,7 +90,7 @@ TowrRosInterface::UserCommandCallback(const TowrCommandMsg& msg)
   formulation_.params_ = GetTowrParameters(n_ee, msg);
   formulation_.final_base_ = GetGoalState(msg);
 
-  SetTowrInitialState();
+  SetTowrInitialState(msg);
 
   // solver parameters
   SetIpoptParameters(msg);

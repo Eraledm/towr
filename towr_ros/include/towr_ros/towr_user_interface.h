@@ -62,6 +62,7 @@ private:
 
   void PublishCommand();
 
+  xpp::State3dEuler init_geom_;
   xpp::State3dEuler goal_geom_;
   int terrain_;
   int gait_combo_;

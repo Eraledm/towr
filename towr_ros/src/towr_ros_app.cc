@@ -44,16 +44,22 @@ public:
   /**
    * @brief Sets the feet to nominal position on flat ground and base above.
    */
-  void SetTowrInitialState() override
+  void SetTowrInitialState(const TowrCommandMsg& msg) override
   {
     auto nominal_stance_B = formulation_.model_.kinematic_model_->GetNominalStanceInBase();
 
     double z_ground = 0.0;
     formulation_.initial_ee_W_ =  nominal_stance_B;
     std::for_each(formulation_.initial_ee_W_.begin(), formulation_.initial_ee_W_.end(),
-                  [&](Vector3d& p){ p.z() = z_ground; } // feet at 0 height
+                  [&](Vector3d& p){ 
+                    p.x() += msg.init_lin.pos.x;
+                    p.y() += msg.init_lin.pos.y;
+                    p.z() = z_ground; // feet at 0 height
+                  }
     );
 
+    formulation_.initial_base_.lin.at(kPos).x() = - nominal_stance_B.front().x() + msg.init_lin.pos.x;
+    formulation_.initial_base_.lin.at(kPos).y() = - nominal_stance_B.front().y() + msg.init_lin.pos.y;
     formulation_.initial_base_.lin.at(kPos).z() = - nominal_stance_B.front().z() + z_ground;
   }
 
