@@ -29,6 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <towr/terrain/height_map.h>
 #include <towr/terrain/examples/height_map_examples.h>
+#include <towr/terrain/sensors/height_map_gridmap.h>
 
 #include <cmath>
 
@@ -45,6 +46,7 @@ HeightMap::MakeTerrain (TerrainID type)
     case SlopeID:     return std::make_shared<Slope>(); break;
     case ChimneyID:   return std::make_shared<Chimney>(); break;
     case ChimneyLRID: return std::make_shared<ChimneyLR>(); break;
+    case GridMapID:   return std::make_shared<HeightGridMap>(); break;
     default: assert(false); break;
   }
 }

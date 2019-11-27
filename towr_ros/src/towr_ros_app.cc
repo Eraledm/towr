@@ -58,8 +58,8 @@ public:
                   }
     );
 
-    formulation_.initial_base_.lin.at(kPos).x() = - nominal_stance_B.front().x() + msg.init_lin.pos.x;
-    formulation_.initial_base_.lin.at(kPos).y() = - nominal_stance_B.front().y() + msg.init_lin.pos.y;
+    formulation_.initial_base_.lin.at(kPos).x() = msg.init_lin.pos.x;
+    formulation_.initial_base_.lin.at(kPos).y() = msg.init_lin.pos.y;
     formulation_.initial_base_.lin.at(kPos).z() = - nominal_stance_B.front().z() + z_ground;
   }
 
